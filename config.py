@@ -4,7 +4,9 @@ TILESIZE = 32
 FPS = 60
 
 #layers to represent different instances
-PLAYER_LAYER = 3
+PLAYER_LAYER = 5
+SEQUENCE_LAYER2 = 4
+SEQUENCE_LAYER = 3
 BLOCK_LAYER = 2
 GROUND_LAYER = 1
 
@@ -20,7 +22,7 @@ WHITE = (255, 255, 255)
 # P represents player
 tilemap = [
     'BBBBBBBBBBBBBBBBBBBBXXXXXXXXXXXXXXXXXXBBBBBBBBBBBBBBBBBBBBBBBBXXXXX',
-    'B..................BXXXXXXXXXXXXXXXXXXB......................BXXXXX',
+    'B.................RBXXXXXXXXXXXXXXXXXXBE.....................BXXXXX',
     'B..................BXXXXXXXXXXXXXXXXXXB......................BXXXXX',
     'B..................BXXXXXXXXXXXXXXXXXXB......................BXXXXX',
     'B..................BXXXXXXXXXXXXXXXXXXB......................BXXXXX',

@@ -1,1 +1,1 @@
-self.timer
+time
