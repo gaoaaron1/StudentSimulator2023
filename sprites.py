@@ -132,7 +132,10 @@ class Player(pygame.sprite.Sprite):
     #detect collision with sequence
     def collide_sequence(self):
         hits = pygame.sprite.spritecollide(self, self.game.sequence, True)
-        #self.game.timerSeconds -= 1200;
+        if hits:
+            self.game.score -= 1000
+            self.game.academic += 1
+            self.game.timer.time -= 30000
 
 
     #detect collision with sequence

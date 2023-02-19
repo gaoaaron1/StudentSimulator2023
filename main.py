@@ -20,7 +20,7 @@ class Game:
         
         #score
         self.score_font = pygame.font.Font('junegull.ttf', 24)
-        self.score = 0
+        self.score = 10000
 
 
         self.sequence_spritesheet = Spritesheet('img/enemy.png')
@@ -122,7 +122,7 @@ class Game:
     def draw(self):
 
         # score label
-        self.score_label = self.score_font.render(f"Score: {self.score}", True, WHITE)
+        self.score_label = self.score_font.render(f"Balance: $ {self.score}", True, WHITE)
         self.score_rect = self.score_label.get_rect(topright=(WIN_WIDTH - 10, 10))
 
         # wellness label
