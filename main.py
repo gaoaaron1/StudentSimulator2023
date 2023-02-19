@@ -19,6 +19,19 @@ class Game:
         self.terrain_spritesheet = Spritesheet('img/terrain.png')
         self.intro_background = pygame.image.load('./img/introbackground.png')
 
+        # center the title text
+        title_text = 'Student Simulator'
+        title = self.font.render(title_text, True, BLACK)
+        title_rect = title.get_rect()
+        title_rect.center = (WIN_WIDTH // 2, WIN_HEIGHT // 3)
+
+        # center the button
+        button_width, button_height = 100, 50
+        button_x = (WIN_WIDTH - button_width) // 2
+        button_y = WIN_HEIGHT // 2
+        play_button = Button(button_x, button_y, button_width, button_height, WHITE, BLACK, 'Play', 32)
+
+
     #Create our tile map 
     def createTileMap(self):    
         #enumerate will scan through elements of the array
@@ -59,6 +72,9 @@ class Game:
         #create a timer object
         self.timer = Timer(self, timerSeconds * 1000)
 
+        #create term label object
+        #self.terms = Term(Game)
+
     def events(self):
         #game loop events
         for event in pygame.event.get():
@@ -77,6 +93,7 @@ class Game:
         self.all_sprites.draw(self.screen)
         self.timer.update()
         self.timer.draw()
+        #self.terms.draw()
         self.clock.tick(FPS) #update 60 fps
         pygame.display.update() #update screen
 
@@ -104,9 +121,13 @@ class Game:
         intro = True
 
         title = self.font.render('Student Simulator', True, BLACK)
-        title_rect = title.get_rect(x=10, y=10)
+        title_rect = title.get_rect(center=(WIN_WIDTH / 2, WIN_HEIGHT / 2.5))
 
-        play_button = Button(10, 50, 100, 50, WHITE, BLACK, 'Play', 32)
+        button_width = 100
+        button_height = 50
+        button_x = (WIN_WIDTH - button_width) // 2
+        button_y = (WIN_HEIGHT - button_height) // 2
+        play_button = Button(button_x, button_y, button_width, button_height, WHITE, BLACK, 'Play', 32)
 
         while intro:
             for event in pygame.event.get():
@@ -132,6 +153,7 @@ g.new()
 while g.running:
     g.main()
     timer = Timer(Game, 30)
+    #terms = Terms(Game)
     g.game_over()
 
 pygame.quit()
