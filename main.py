@@ -5,6 +5,9 @@ from hud import *
 
 import sys
 
+from config import BLACK, FPS, WHITE, WIN_HEIGHT, WIN_WIDTH, tilemap
+from sprites import Block, Button, EmptyBlock, Ground, Player, Spritesheet
+
 class Game:
     def __init__(self):
         pygame.init()
@@ -19,11 +22,16 @@ class Game:
         self.score_font = pygame.font.Font('junegull.ttf', 24)
         self.score = 0
 
-        self.character_spritesheet = Spritesheet('img/character.png')
-        self.terrain_spritesheet = Spritesheet('img/terrain.png')
+
         self.sequence_spritesheet = Spritesheet('img/enemy.png')
         self.sequence2_spritesheet = Spritesheet('img/enemy.png')
-        self.intro_background = pygame.image.load('./img/introbackground.png')
+        self.academic, self.wellness, self.social = 0, 0, 0
+
+        self.font = self.score_font
+
+        self.character_spritesheet = Spritesheet("img/character.png")
+        self.terrain_spritesheet = Spritesheet("img/terrain.png")
+        self.intro_background = pygame.image.load("./img/introbackground.png")
         self.go_background = pygame.image.load('./img/gameover.png')
 
         # center the title text
@@ -36,8 +44,9 @@ class Game:
         button_width, button_height = 100, 50
         button_x = (WIN_WIDTH - button_width) // 2
         button_y = WIN_HEIGHT // 2
-        play_button = Button(button_x, button_y, button_width, button_height, WHITE, BLACK, 'Play', 32)
-
+        play_button = Button(
+            button_x, button_y, button_width, button_height, WHITE, BLACK, "Play", 32
+        )
 
     #Create our tile map 
     def createTileMap(self):    
@@ -112,19 +121,35 @@ class Game:
 
     def draw(self):
 
-        #score label
-        score_label = self.score_font.render(f'Score: {self.score}', True, WHITE)
-        score_rect = score_label.get_rect(topright=(WIN_WIDTH - 10, 10))
-        self.screen.blit(score_label, score_rect)
+        # score label
+        self.score_label = self.score_font.render(f"Score: {self.score}", True, WHITE)
+        self.score_rect = self.score_label.get_rect(topright=(WIN_WIDTH - 10, 10))
 
+        # wellness label
+        self.wellness_label = self.font.render(f"Wellness: {self.wellness}", True, WHITE)
+        self.wellness_rect = self.wellness_label.get_rect(
+            bottomleft=(310, WIN_HEIGHT - 10)
+        )        
+
+        self.academic_label = self.font.render(f"Academic: {self.academic}", True, WHITE)
+        self.academic_rect = self.academic_label.get_rect(
+            bottomleft=(160, WIN_HEIGHT - 10)
+        )
+
+        self.social_label = self.font.render(f"Social: {self.social}", True, WHITE)
+        self.social_rect = self.social_label.get_rect(bottomleft=(10, WIN_HEIGHT - 10))
         # game loop draw
         self.screen.fill(BLACK)
         self.all_sprites.draw(self.screen)
         self.timer.update()
         self.timer.draw()
-        #self.terms.draw()
-        self.clock.tick(FPS) #update 60 fps
-        pygame.display.update() #update screen
+        self.screen.blit(self.score_label, self.score_rect)
+        self.screen.blit(self.wellness_label, self.wellness_rect)
+        self.screen.blit(self.academic_label, self.academic_rect)
+        self.screen.blit(self.social_label, self.social_rect)
+        # self.terms.draw()
+        self.clock.tick(FPS)  # update 60 fps
+        pygame.display.update()  # update screen
 
     def main(self):
         # game loop
@@ -174,7 +199,7 @@ class Game:
     def intro_screen(self):
         intro = True
 
-        title = self.font.render('Student Simulator', True, BLACK)
+        title = self.font.render("Student Simulator", True, BLACK)
         title_rect = title.get_rect(center=(WIN_WIDTH / 2, WIN_HEIGHT / 2.5))
 
         button_width = 100
