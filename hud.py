@@ -1,16 +1,22 @@
 import pygame
 from config import *
 
+''' 
 class Term:
     def __init__(self, game):
         self.game = game
         self.font = pygame.font.Font('junegull.ttf', 24)
+        self.label = "Fall"
 
     def draw(self):
+        # Create a text object for the HUD label
+        self.text = self.font.render(self.label, True, WHITE)
+        self.rect = self.text.get_rect()
+        self.rect.center = (WIN_WIDTH / 2, 20)
 
         # Draw the HUD label on the screen
-        self.game.screen.blit(self.text, self.rect)  
-           
+        self.game.screen.blit(self.text, self.rect)     
+'''
 
 class Timer(pygame.sprite.Sprite):
     def __init__(self, game, time):

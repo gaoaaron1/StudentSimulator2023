@@ -14,6 +14,10 @@ class Game:
         self.clock = pygame.time.Clock()
         self.font = pygame.font.Font('junegull.ttf', 32)
         self.running = True
+        
+        #score
+        self.score_font = pygame.font.Font('junegull.ttf', 24)
+        self.score = 0
 
         self.character_spritesheet = Spritesheet('img/character.png')
         self.terrain_spritesheet = Spritesheet('img/terrain.png')
@@ -52,6 +56,11 @@ class Game:
                     #Creates player object
                     Player(self, j, i)    
 
+                #For every "BB" or black block create an black layer wall
+                if column == "X":
+                    #Create black wall object
+                    EmptyBlock(self, j, i)    
+
     def new(self):
 
         #A new game starts
@@ -88,6 +97,12 @@ class Game:
         self.all_sprites.update()
 
     def draw(self):
+
+        #score label
+        score_label = self.score_font.render(f'Score: {self.score}', True, WHITE)
+        score_rect = score_label.get_rect(topright=(WIN_WIDTH - 10, 10))
+        self.screen.blit(score_label, score_rect)
+
         # game loop draw
         self.screen.fill(BLACK)
         self.all_sprites.draw(self.screen)
