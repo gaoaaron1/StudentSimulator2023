@@ -13,6 +13,7 @@ PLAYER_SPEED = 3
 RED = (255, 0, 0)
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255) 
+WHITE = (255, 255, 255)
 
 #B represents walls and 
 # ... represents paths
@@ -29,6 +30,11 @@ tilemap = [
     'B.....BBB..........B',
     'B.......B..........B',
     'B.......B..........B',
+    'B..................B',
+    'B..................B',
+    'B..................B',  
+    'BBBBBBBBBBBB..BBBBBB',
+    'BBBBBBBBBBBB..BBBBBB',
     'B..................B',
     'B..................B',
     'B..................B',  
