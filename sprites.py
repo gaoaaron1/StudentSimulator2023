@@ -72,6 +72,9 @@ class Player(pygame.sprite.Sprite):
         #animate our user
         self.animate()
 
+        self.collide_sequence()
+        self.collide_sequence2()
+
         self.rect.x += self.x_change
         self.collide_blocks('x')
         self.rect.y += self.y_change
@@ -125,6 +128,19 @@ class Player(pygame.sprite.Sprite):
 
             self.y_change += PLAYER_SPEED
             self.facing = 'down'    
+
+    #detect collision with sequence
+    def collide_sequence(self):
+        hits = pygame.sprite.spritecollide(self, self.game.sequence, True)
+        #self.game.timerSeconds -= 1200;
+
+
+    #detect collision with sequence
+    def collide_sequence2(self):
+        hits = pygame.sprite.spritecollide(self, self.game.sequence2, True)
+        if hits:
+            self.kill()
+            self.game.playing = False
 
     #detect collisions        
     def collide_blocks(self, direction):  
@@ -259,6 +275,69 @@ class EmptyBlock(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
+
+class Sequence2(pygame.sprite.Sprite): 
+    def __init__(self, game, x, y):
+
+        self.game = game
+        self._layer = SEQUENCE_LAYER2
+        self.groups = self.game.all_sprites, self.game.sequence2
+        pygame.sprite.Sprite.__init__(self, self.groups)
+
+        self.x = x * TILESIZE
+        self.y = y * TILESIZE
+        self.width = TILESIZE
+        self.height = TILESIZE
+
+        self.x_change = 0
+        self.y_change = 0
+
+        self.image = self.game.sequence2_spritesheet.get_sprite(5, 2, self.width, self.height)
+        self.image.set_colorkey(BLACK)
+
+        self.rect = self.image.get_rect()
+        self.rect.x = self.x
+        self.rect.y = self.y
+
+    def update(self):
+        self.x += self.x_change
+        self.y += self.y_change
+
+        self.x_change = 0
+        self.y_change = 0           
+
+
+class Sequence(pygame.sprite.Sprite):
+    def __init__(self, game, x, y):
+
+        self.game = game
+        self._layer = SEQUENCE_LAYER
+        self.groups = self.game.all_sprites, self.game.sequence
+        pygame.sprite.Sprite.__init__(self, self.groups)
+
+        self.x = x * TILESIZE
+        self.y = y * TILESIZE
+        self.width = TILESIZE
+        self.height = TILESIZE
+
+        self.x_change = 0
+        self.y_change = 0
+
+        self.image = self.game.sequence_spritesheet.get_sprite(3, 2, self.width, self.height)
+        self.image.set_colorkey(BLACK)
+
+        self.rect = self.image.get_rect()
+        self.rect.x = self.x
+        self.rect.y = self.y
+
+    def update(self):
+        self.x += self.x_change
+        self.y += self.y_change
+
+        self.x_change = 0
+        self.y_change = 0
+
+
 
 #instance for walls
 class Block(pygame.sprite.Sprite):

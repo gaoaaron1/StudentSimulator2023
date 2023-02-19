@@ -30,8 +30,8 @@ class Timer(pygame.sprite.Sprite):
         elapsed_time = pygame.time.get_ticks() - self.start_time
         self.time = max(0, self.time - elapsed_time)
         self.start_time = pygame.time.get_ticks()
-        if self.time == 0:
-            self.game.playing = False
+        #if self.time == 0:
+            #self.game.playing = False
 
     def draw(self):
         # Convert time from milliseconds to minutes and seconds

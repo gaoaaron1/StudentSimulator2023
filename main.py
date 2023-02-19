@@ -21,7 +21,10 @@ class Game:
 
         self.character_spritesheet = Spritesheet('img/character.png')
         self.terrain_spritesheet = Spritesheet('img/terrain.png')
+        self.sequence_spritesheet = Spritesheet('img/enemy.png')
+        self.sequence2_spritesheet = Spritesheet('img/enemy.png')
         self.intro_background = pygame.image.load('./img/introbackground.png')
+        self.go_background = pygame.image.load('./img/gameover.png')
 
         # center the title text
         title_text = 'Student Simulator'
@@ -56,10 +59,20 @@ class Game:
                     #Creates player object
                     Player(self, j, i)    
 
-                #For every "BB" or black block create an black layer wall
+                #For every "X" or black block create an black layer wall
                 if column == "X":
                     #Create black wall object
                     EmptyBlock(self, j, i)    
+
+                #For every "E"
+                if column == "E":
+                    #Create event
+                    Sequence(self, j, i)
+
+                #For every "R"
+                if column == "R":
+                    #Create event
+                    Sequence2(self, j, i)    
 
     def new(self):
 
@@ -69,7 +82,8 @@ class Game:
         #Contains all sprites in game
         self.all_sprites = pygame.sprite.LayeredUpdates()
         self.blocks = pygame.sprite.LayeredUpdates()
-        self.enemies = pygame.sprite.LayeredUpdates()
+        self.sequence = pygame.sprite.LayeredUpdates()
+        self.sequence2 = pygame.sprite.LayeredUpdates()
         self.attacks = pygame.sprite.LayeredUpdates()
 
         #create tile map
@@ -118,17 +132,42 @@ class Game:
             self.events()
             self.update()
             self.draw()
-        self.running = False
 
     
     def game_over(self):
         self.timer.update()
         self.timer.draw()
-        game_over_text = self.font.render('Game Over', True, WHITE)
-        game_over_rect = game_over_text.get_rect(center=(WIN_WIDTH//2, WIN_HEIGHT//2))
-        self.screen.blit(game_over_text, game_over_rect)
-        pygame.display.update()
-        pygame.time.wait(3000)
+        text = self.font.render('Game Over', True, WHITE)
+        text_rect = text.get_rect(center=(WIN_WIDTH / 2, WIN_HEIGHT /2))
+
+        restart_button = Button(10, WIN_HEIGHT - 60, 120, 50, WHITE, BLACK, 'Restart', 32)
+
+        for sprite in self.all_sprites:
+            sprite.kill()
+
+        while self.running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_pressed = pygame.mouse.get_pressed()
+
+            if restart_button.is_pressed(mouse_pos, mouse_pressed):
+                self.new()
+                self.main()
+
+            self.screen.blit(self.go_background, (0,0)) 
+            self.screen.blit(text, text_rect)
+            self.screen.blit(restart_button.image, restart_button.rect)
+            self.clock.tick(FPS)    
+            pygame.display.update()
+            #pygame.time.wait(3000)       
+
+        #game_over_text = self.font.render('Game Over', True, WHITE)
+        #game_over_rect = game_over_text.get_rect(center=(WIN_WIDTH//2, WIN_HEIGHT//2))
+        #self.screen.blit(game_over_text, game_over_rect)
+
         
 
     #title screen for render
