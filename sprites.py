@@ -36,6 +36,8 @@ class Player(pygame.sprite.Sprite):
         #player direction
         self.facing = 'down'
 
+        self.animation_loop = 1
+
 
         #create a sprite sheet
         self.image = self.game.character_spritesheet.get_sprite(3, 2, self.width, self.height)
@@ -49,8 +51,13 @@ class Player(pygame.sprite.Sprite):
         #render and updates the user's movements
         self.movement()
 
+        #animate our user
+        self.animate()
+
         self.rect.x += self.x_change
+        self.collide_blocks('x')
         self.rect.y += self.y_change
+        self.collide_blocks('y')
 
         self.x_change = 0
         self.y_change = 0
@@ -77,8 +84,121 @@ class Player(pygame.sprite.Sprite):
         #press down arrow key
         if keys[pygame.K_DOWN]:
             self.y_change += PLAYER_SPEED
-            self.facing = 'down'          
+            self.facing = 'down'    
+
+    #detect collisions        
+    def collide_blocks(self, direction):  
+        
+        #horizontal collisions
+        if direction == "x":
+
+            #we assign hit to the game block
+            #False - check whether we want to delete sprite when collide
+            hits = pygame.sprite.spritecollide(self, self.game.blocks, False)
+            if hits:
+                #moving right
+                if self.x_change > 0:
+                    #first align with block then 
+                    #since we subtract self.rect.width, we go beside block
+                    self.rect.x = hits[0].rect.left - self.rect.width
+                
+                #moving left    
+                if self.x_change < 0:  
+                    self.rect.x = hits[0].rect.right      
+
+        #vertical collisions
+        if direction == "y":
+            #we assign hit to the game block
+            #False - check whether we want to delete sprite when collide
+            hits = pygame.sprite.spritecollide(self, self.game.blocks, False)
+            if hits:
+                #moving down
+                if self.y_change > 0:
+                    #first align with block then 
+                    #since we subtract self.rect.height, we take away height
+                    self.rect.y = hits[0].rect.top - self.rect.height
+                
+                #moving up    
+                if self.y_change < 0:  
+                    self.rect.y = hits[0].rect.bottom    
+
+
+    def animate(self):
+        #animation positions
+        down_animations = [self.game.character_spritesheet.get_sprite(3, 2, self.width, self.height),
+                           self.game.character_spritesheet.get_sprite(35, 2, self.width, self.height),
+                           self.game.character_spritesheet.get_sprite(68, 2, self.width, self.height)]
+
+        up_animations = [self.game.character_spritesheet.get_sprite(3, 34, self.width, self.height),
+                         self.game.character_spritesheet.get_sprite(35, 34, self.width, self.height),
+                         self.game.character_spritesheet.get_sprite(68, 34, self.width, self.height)]
+
+        left_animations = [self.game.character_spritesheet.get_sprite(3, 98, self.width, self.height),
+                           self.game.character_spritesheet.get_sprite(35, 98, self.width, self.height),
+                           self.game.character_spritesheet.get_sprite(68, 98, self.width, self.height)]
+
+        right_animations = [self.game.character_spritesheet.get_sprite(3, 66, self.width, self.height),
+                            self.game.character_spritesheet.get_sprite(35, 66, self.width, self.height),
+                            self.game.character_spritesheet.get_sprite(68, 66, self.width, self.height)]
+
+        if self.facing == "down":
+            #if stand still, set image to static image
+            if self.y_change == 0:
+                self.image = self.game.character_spritesheet.get_sprite(3, 2, self.width, self.height)
+            else:
+                #otherwise we move, and use animations
+                self.image = down_animations[math.floor(self.animation_loop)]
+                #every 10 frames change animation
+                self.animation_loop += 0.1
+
+                #when after iterating 3 images set animation to 1
+                if self.animation_loop >= 3:
+                    self.animation_loop = 1
             
+        if self.facing == "up":
+            #if stand still, set image to static image
+            if self.y_change == 0:
+                self.image = self.game.character_spritesheet.get_sprite(3, 34, self.width, self.height)
+            else:
+                #otherwise we move, and use animations
+                self.image = up_animations[math.floor(self.animation_loop)]
+                #every 10 frames change animation
+                self.animation_loop += 0.1
+
+                #when after iterating 3 images set animation to 1
+                if self.animation_loop >= 3:
+                    self.animation_loop = 1
+            
+        if self.facing == "left":
+            #if stand still, set image to static image
+            if self.x_change == 0:
+                self.image = self.game.character_spritesheet.get_sprite(3, 98, self.width, self.height)
+            else:
+                #otherwise we move, and use animations
+                self.image = left_animations[math.floor(self.animation_loop)]
+                #every 10 frames change animation
+                self.animation_loop += 0.1
+
+                #when after iterating 3 images set animation to 1
+                if self.animation_loop >= 3:
+                    self.animation_loop = 1
+            
+        if self.facing == "right":
+            #if stand still, set image to static image
+            if self.x_change == 0:
+                self.image = self.game.character_spritesheet.get_sprite(3, 66, self.width, self.height)
+            else:
+                #otherwise we move, and use animations
+                self.image = right_animations[math.floor(self.animation_loop)]
+                #every 10 frames change animation
+                self.animation_loop += 0.1
+
+                #when after iterating 3 images set animation to 1
+                if self.animation_loop >= 3:
+                    self.animation_loop = 1
+
+
+
 #instance for walls
 class Block(pygame.sprite.Sprite):
     def __init__(self, game, x, y):
