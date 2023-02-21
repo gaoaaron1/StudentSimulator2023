@@ -15,6 +15,7 @@ class Game:
         #create window
         self.screen = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
         self.clock = pygame.time.Clock()
+        
         self.font = pygame.font.Font('junegull.ttf', 32)
         self.running = True
         
@@ -88,7 +89,7 @@ class Game:
         #A new game starts
         self.playing = True
 
-        #Contains all sprites in game
+        # Contains all sprites in game
         self.all_sprites = pygame.sprite.LayeredUpdates()
         self.blocks = pygame.sprite.LayeredUpdates()
         self.sequence = pygame.sprite.LayeredUpdates()
@@ -108,9 +109,9 @@ class Game:
         #self.terms = Term(Game)
 
     def events(self):
-        #game loop events
+        # game loop events
         for event in pygame.event.get():
-            #click close button closes app
+            # click close button closes app
             if event.type == pygame.QUIT:
                 self.playing = False
                 self.running = False
@@ -141,6 +142,7 @@ class Game:
         # game loop draw
         self.screen.fill(BLACK)
         self.all_sprites.draw(self.screen)
+
         self.timer.update()
         self.timer.draw()
         self.screen.blit(self.score_label, self.score_rect)
@@ -148,6 +150,7 @@ class Game:
         self.screen.blit(self.academic_label, self.academic_rect)
         self.screen.blit(self.social_label, self.social_rect)
         # self.terms.draw()
+
         self.clock.tick(FPS)  # update 60 fps
         pygame.display.update()  # update screen
 
@@ -158,7 +161,6 @@ class Game:
             self.update()
             self.draw()
 
-    
     def game_over(self):
         self.timer.update()
         self.timer.draw()
@@ -226,6 +228,7 @@ class Game:
             self.clock.tick(FPS)
             pygame.display.update()    
 
+
 g = Game()
 g.intro_screen()
 g.new()
@@ -237,6 +240,3 @@ while g.running:
 
 pygame.quit()
 sys.exit()
-
-
-
